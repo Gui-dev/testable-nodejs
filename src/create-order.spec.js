@@ -43,5 +43,24 @@ describe('#Create Order', () => {
 
     assert.equal(order.priority, true)
   })
+
+  it('should be able orders with an amount lower than 3000 should not be marked as priority', async () => {
+    const order = await createOrder({
+      customerId: 'customer-fake-id',
+      amount: 2000
+    }, {
+      create (data) {
+        const id = 'order-fake-id'
+        return {
+          id,
+          customerId: data.customerId,
+          priority: data.isPriority,
+          amount: data.amount
+        }
+      }
+    })
+
+    assert.equal(order.priority, false)
+  })
 })
 
